@@ -50,7 +50,9 @@
   .nav-logo img {
     height: 96px;
     width: auto;
+    border-radius: 3px;
     filter: brightness(1);
+    display: block;
   }
 
   .nav-links {
@@ -82,6 +84,36 @@
   }
 
   .nav-cta:hover { opacity: 0.85; color: var(--black) !important; }
+
+  /* BURGER (mobile) */
+  .nav-toggle {
+    display: none;
+    position: relative;
+    width: 44px;
+    height: 44px;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .nav-toggle span {
+    position: absolute;
+    left: 11px;
+    right: 11px;
+    height: 1px;
+    background: var(--white);
+    transition: transform 0.3s ease, opacity 0.2s ease, top 0.3s ease;
+  }
+
+  .nav-toggle span:nth-child(1) { top: 14px; }
+  .nav-toggle span:nth-child(2) { top: 20px; }
+  .nav-toggle span:nth-child(3) { top: 26px; }
+
+  .nav-toggle.open span:nth-child(1) { top: 20px; transform: rotate(45deg); }
+  .nav-toggle.open span:nth-child(2) { opacity: 0; }
+  .nav-toggle.open span:nth-child(3) { top: 20px; transform: rotate(-45deg); }
 
   /* HERO */
   #hero {
@@ -285,6 +317,123 @@
     letter-spacing: 0.05em;
     padding-top: 1.5rem;
     border-top: 1px solid var(--border);
+  }
+
+  /* SERVICES : menus déroulants */
+  .service-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 1.5rem;
+    padding: 0.875rem 1rem;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    color: var(--white);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .service-toggle:hover { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.03); }
+  .service-toggle:focus-visible { outline: 1px solid var(--white); outline-offset: 3px; }
+  .service-toggle[aria-expanded="true"] { border-color: rgba(255,255,255,0.3); }
+
+  .service-toggle-icon {
+    position: relative;
+    flex: none;
+    width: 12px;
+    height: 12px;
+    margin-left: 1rem;
+  }
+
+  .service-toggle-icon::before,
+  .service-toggle-icon::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: currentColor;
+    transition: transform 0.3s ease;
+  }
+
+  .service-toggle-icon::after { transform: rotate(90deg); }
+  .service-toggle[aria-expanded="true"] .service-toggle-icon::after { transform: rotate(0deg); }
+
+  .service-details {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.4s ease;
+  }
+
+  .service-details.open { grid-template-rows: 1fr; }
+
+  .service-details-inner {
+    min-height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    transition: visibility 0s linear 0.4s;
+  }
+
+  .service-details.open .service-details-inner {
+    visibility: visible;
+    transition-delay: 0s;
+  }
+
+  .service-spec-title {
+    margin-top: 1.5rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .service-spec { margin-top: 0.5rem; }
+
+  .service-spec-row {
+    display: grid;
+    grid-template-columns: 8.5rem 1fr;
+    gap: 1rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .service-spec-row:last-child { border-bottom: none; }
+
+  .service-spec dt {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .service-spec dd {
+    font-size: 0.85rem;
+    color: var(--white);
+    line-height: 1.6;
+  }
+
+  .service-spec dd span { display: block; }
+
+  .service-spec-note {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .service-details, .service-toggle-icon::before, .service-toggle-icon::after { transition: none; }
   }
 
   /* PROJETS */
@@ -495,8 +644,6 @@
   transform: translateX(4px);
 }
 
-  .contact-link:hover { padding-left: 0.5rem; }
-
   .contact-link-label {
     font-family: 'DM Mono', monospace;
     font-size: 0.65rem;
@@ -560,7 +707,31 @@
   /* MOBILE */
   @media (max-width: 768px) {
     nav { padding: 1rem 1.25rem; }
-    .nav-links { display: none; }
+    .nav-toggle { display: block; }
+    .nav-links {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      gap: 0;
+      padding: 0.5rem 1.25rem 1.5rem;
+      background: rgba(9,9,9,0.97);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-links.open { display: flex; }
+    .nav-links li a {
+      display: block;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-links li a.nav-cta {
+      margin-top: 1rem;
+      padding: 0.875rem 1.25rem;
+      text-align: center;
+      border-bottom: none;
+    }
     #hero { padding: 0 1.25rem 4rem; }
     section { padding: 4rem 1.25rem; }
     .about-grid { grid-template-columns: 1fr; gap: 3rem; }
@@ -573,14 +744,17 @@
 <!-- NAV -->
 <nav>
   <a href="#hero" class="nav-logo">
-    <img src="LogoHBsound.png" alt="Studio HB Sound" style="width:100%; border-radius:3px;">
+    <img src="LogoHBsound.png" alt="Studio HB Sound">
   </a>
-  <ul class="nav-links">
+  <ul class="nav-links" id="nav-menu">
     <li><a href="#services">Services</a></li>
     <li><a href="#projets">Projets</a></li>
     <li><a href="#about">À propos</a></li>
     <li><a href="#contact" class="nav-cta">Contact</a></li>
   </ul>
+  <button class="nav-toggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav-menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
 <!-- HERO -->
@@ -615,18 +789,61 @@
       <h2 class="service-name">Mixage</h2>
       <p class="service-desc">Un équilibre travaillé, une cohérence entre tous les éléments et un son impactant. Ton titre mérite un son professionnel.</p>
       <p class="service-price">À partir de 100 € / titre (tarifs spéciaux pour albums/EPs)</p>
+      <button class="service-toggle" type="button" aria-expanded="false" aria-controls="details-mixage">
+        <span>Voir le détail</span><span class="service-toggle-icon" aria-hidden="true"></span>
+      </button>
+      <div class="service-details" id="details-mixage">
+        <div class="service-details-inner">
+          <p class="service-spec-title">Mixage single</p>
+          <dl class="service-spec">
+            <div class="service-spec-row"><dt>Fichiers reçus</dt><dd>Pistes audio préparées</dd></div>
+            <div class="service-spec-row"><dt>Préparation</dt><dd>Import et organisation courante</dd></div>
+            <div class="service-spec-row"><dt>Travail principal</dt><dd>Équilibre, traitement, effets, automation</dd></div>
+            <div class="service-spec-row"><dt>Retours inclus</dt><dd>2 séries</dd></div>
+            <div class="service-spec-row"><dt>Modifications supplémentaires</dt><dd>Sur devis si hors périmètre</dd></div>
+            <div class="service-spec-row"><dt>Livraison</dt><dd><span>Mix stéréo, formats convenus</span><span>Master et formats convenus</span></dd></div>
+            <div class="service-spec-row"><dt>Délai</dt><dd>À confirmer à la commande</dd></div>
+          </dl>
+        </div>
+      </div>
     </div>
     <div class="service-card">
       <p class="service-number">02</p>
       <h2 class="service-name">Mastering</h2>
       <p class="service-desc">La touche finale. Loudness et compétitivité. Sur toutes les plateformes, ton projet sera prêt à sortir.</p>
       <p class="service-price">À partir de 50 € / titre (tarifs spéciaux pour albums/EPs)</p>
+      <button class="service-toggle" type="button" aria-expanded="false" aria-controls="details-mastering">
+        <span>Voir le détail</span><span class="service-toggle-icon" aria-hidden="true"></span>
+      </button>
+      <div class="service-details" id="details-mastering">
+        <div class="service-details-inner">
+          <p class="service-spec-title">Mastering</p>
+          <dl class="service-spec">
+            <div class="service-spec-row"><dt>Tarif</dt><dd>À partir de 50 € / titre</dd></div>
+            <div class="service-spec-row"><dt>Albums / EPs</dt><dd>Tarifs spéciaux</dd></div>
+          </dl>
+          <p class="service-spec-note">Le détail complet de la prestation (fichiers reçus, retours, livraison, délai) est communiqué sur demande.</p>
+        </div>
+      </div>
     </div>
     <div class="service-card">
       <p class="service-number">03</p>
       <h2 class="service-name">Enregistrement</h2>
       <p class="service-desc">Accès à du matériel analogique de qualité. Préamps, compresseurs, EQ... Pour donner de la chaleur, du grain et du caractère à ta musique.</p>
       <p class="service-price">Sur devis</p>
+      <button class="service-toggle" type="button" aria-expanded="false" aria-controls="details-enregistrement">
+        <span>Voir le détail</span><span class="service-toggle-icon" aria-hidden="true"></span>
+      </button>
+      <div class="service-details" id="details-enregistrement">
+        <div class="service-details-inner">
+          <p class="service-spec-title">Enregistrement</p>
+          <dl class="service-spec">
+            <div class="service-spec-row"><dt>Tarif</dt><dd>Sur devis</dd></div>
+            <div class="service-spec-row"><dt>Matériel</dt><dd>Préamps, compresseurs, EQ analogiques</dd></div>
+          </dl>
+          <p class="service-spec-note">Le détail complet de la prestation (déroulé de session, livraison, délai) est communiqué sur demande.</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -671,7 +888,7 @@
         <iframe src="https://open.spotify.com/embed/track/328wfRIuyUjSkHKFESqhil?utm_source=generator&theme=0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
       </div>
       <div class="project-info">
-        <p class="project-role">Mastering · Single</p>
+        <p class="project-role">Mastering · EP</p>
         <h3 class="project-title">Once I Was A River</h3>
         <p class="project-artist">Loupiot</p>
         <a href="https://open.spotify.com/embed/track/328wfRIuyUjSkHKFESqhil" target="_blank" rel="noopener" class="project-link">
@@ -704,7 +921,7 @@
         <p class="project-role">Mastering · Single</p>
         <h3 class="project-title">Sweet Candy</h3>
         <p class="project-artist">Rod</p>
-        <a href="https://open.spotify.com/embed/track/071Si5nx0eFjHbuQ1BEROG" target="_blank" rel="noopener" class="project-link">
+        <a href="https://open.spotify.com/intl-fr/track/7kLK2XcUkE1b4xxVA0no2c" target="_blank" rel="noopener" class="project-link">
           Écouter sur Spotify
           <svg viewBox="0 0 16 16"><path d="M6.354 5.5H4a3 3 0 0 0 0 6h3.75V10H4a1.5 1.5 0 0 1 0-3h2.354l1.5-1.5zM9.646 5.5H12a3 3 0 0 1 0 6H8.25V10H12a1.5 1.5 0 0 0 0-3H9.646l-1.5-1.5z"/><path d="M3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8z"/></svg>
         </a>
@@ -740,7 +957,7 @@
     </div>
     <div class="about-stats reveal">
       <div class="stat">
-        <p class="stat-num">6</p>
+        <p class="stat-num">5+</p>
         <p class="stat-label">Projets référencés sur plateformes</p>
       </div>
       <div class="stat">
@@ -804,6 +1021,31 @@ color: rgba(245,245,240,0.4); text-decoration: none; letter-spacing: 0.1em;">
     });
   }, { threshold: 0.1 });
   reveals.forEach(el => observer.observe(el));
+
+  // Menus déroulants des services
+  document.querySelectorAll('.service-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const panel = document.getElementById(btn.getAttribute('aria-controls'));
+      const open = btn.getAttribute('aria-expanded') !== 'true';
+      btn.setAttribute('aria-expanded', open);
+      panel.classList.toggle('open', open);
+    });
+  });
+
+  // Menu burger (mobile)
+  const navToggle = document.querySelector('.nav-toggle');
+  const navMenu = document.getElementById('nav-menu');
+
+  function setMenu(open) {
+    navToggle.classList.toggle('open', open);
+    navMenu.classList.toggle('open', open);
+    navToggle.setAttribute('aria-expanded', open);
+    navToggle.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
+  }
+
+  navToggle.addEventListener('click', () => setMenu(!navMenu.classList.contains('open')));
+  navMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') setMenu(false); });
 </script>
 
 </body>
