@@ -275,14 +275,17 @@
   .services-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
+    gap: 0;
+    align-items: start; /* chaque carte garde sa propre hauteur : seule celle ouverte s'agrandit */
+    border-top: 1px solid var(--border);
+    border-left: 1px solid var(--border);
   }
 
   .service-card {
     background: var(--card);
     padding: 2.5rem;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
     transition: background 0.2s;
   }
 
@@ -1025,10 +1028,14 @@ color: rgba(245,245,240,0.4); text-decoration: none; letter-spacing: 0.1em;">
   // Menus déroulants des services
   document.querySelectorAll('.service-toggle').forEach(btn => {
     btn.addEventListener('click', () => {
-      const panel = document.getElementById(btn.getAttribute('aria-controls'));
       const open = btn.getAttribute('aria-expanded') !== 'true';
-      btn.setAttribute('aria-expanded', open);
-      panel.classList.toggle('open', open);
+      // Un seul menu ouvert à la fois : on referme tous les autres
+      document.querySelectorAll('.service-toggle').forEach(b => {
+        const isThis = b === btn;
+        const isOpen = isThis && open;
+        b.setAttribute('aria-expanded', isOpen);
+        document.getElementById(b.getAttribute('aria-controls')).classList.toggle('open', isOpen);
+      });
     });
   });
 
