@@ -134,6 +134,26 @@
       radial-gradient(ellipse 40% 60% at 10% 80%, rgba(255,255,255,0.02) 0%, transparent 50%);
   }
 
+  /* Photo du studio en fond, à peine visible (ajuste l'opacité pour la renforcer ou l'atténuer) */
+  .hero-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url('studio-hb.jpg') center 40% / cover no-repeat;
+    opacity: 0.14;
+    filter: grayscale(0.35) contrast(1.05);
+  }
+
+  /* Fondu vers le noir sur les bords pour fusionner avec le reste du site */
+  .hero-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to bottom, var(--black) 0%, transparent 25%, transparent 55%, var(--black) 100%),
+      radial-gradient(ellipse 85% 75% at 50% 45%, transparent 40%, var(--black) 100%);
+  }
+
   .hero-lines {
     position: absolute;
     inset: 0;
@@ -736,6 +756,7 @@
       border-bottom: none;
     }
     #hero { padding: 0 1.25rem 4rem; }
+    .hero-bg::before { opacity: 0.1; background-position: 55% 40%; }
     section { padding: 4rem 1.25rem; }
     .about-grid { grid-template-columns: 1fr; gap: 3rem; }
     footer { flex-direction: column; gap: 1rem; text-align: center; }
@@ -797,7 +818,7 @@
       </button>
       <div class="service-details" id="details-mixage">
         <div class="service-details-inner">
-          <p class="service-spec-title">Mixage</p>
+          <p class="service-spec-title">Mixage single</p>
           <dl class="service-spec">
             <div class="service-spec-row"><dt>Fichiers reçus</dt><dd>Pistes audio préparées</dd></div>
             <div class="service-spec-row"><dt>Préparation</dt><dd>Import et organisation courante</dd></div>
@@ -822,14 +843,10 @@
         <div class="service-details-inner">
           <p class="service-spec-title">Mastering</p>
           <dl class="service-spec">
-            <div class="service-spec-row"><dt>Fichiers reçus</dt><dd>Mix stéréo finalisé</dd></div>
-            <div class="service-spec-row"><dt>Préparation</dt><dd>Contrôle du fichier</dd></div>
-            <div class="service-spec-row"><dt>Travail principal</dt><dd>Équilibre tonal et dynamique, choérence et finalisation</dd></div>
-            <div class="service-spec-row"><dt>Retours inclus</dt><dd>1 série</dd></div>
-            <div class="service-spec-row"><dt>Modifications supplémentaires</dt><dd>Sur devis si hors périmètre</dd></div>
-            <div class="service-spec-row"><dt>Livraison</dt><dd><span>Master et formats convenus</dd></div>
-            <div class="service-spec-row"><dt>Délai</dt><dd>À confirmer à la commande</dd></div>
+            <div class="service-spec-row"><dt>Tarif</dt><dd>À partir de 50 € / titre</dd></div>
+            <div class="service-spec-row"><dt>Albums / EPs</dt><dd>Tarifs spéciaux</dd></div>
           </dl>
+          <p class="service-spec-note">Le détail complet de la prestation (fichiers reçus, retours, livraison, délai) est communiqué sur demande.</p>
         </div>
       </div>
     </div>
@@ -846,7 +863,7 @@
           <p class="service-spec-title">Enregistrement</p>
           <dl class="service-spec">
             <div class="service-spec-row"><dt>Tarif</dt><dd>Sur devis</dd></div>
-            <div class="service-spec-row"><dt>Matériel</dt><dd>EQ/préamp/compresseurs analogique, Backline (batterie, guitares, claviers...) </dd></div>
+            <div class="service-spec-row"><dt>Matériel</dt><dd>Préamps, compresseurs, EQ analogiques</dd></div>
           </dl>
           <p class="service-spec-note">Le détail complet de la prestation (déroulé de session, livraison, délai) est communiqué sur demande.</p>
         </div>
